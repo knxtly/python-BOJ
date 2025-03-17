@@ -1,0 +1,26 @@
+input = open("input.txt", "r").readline
+# import sys
+# input = sys.stdin.readline
+
+n, r, c = map(int, input().split())
+offset = [0, 0]
+ans = 0
+def z(size):
+    global offset, ans
+    if size == 1:
+        # print(f"size: {size}\noffset: {offset}\tans: {ans}")
+        return
+        
+    # print(f"size: {size}\noffset: {offset}\tans: {ans}")
+    unit = size // 2
+    dy = (r - offset[0] >= unit)
+    dx = (c - offset[1] >= unit)
+    offset[0] += unit * dy
+    offset[1] += unit * dx
+    
+    ans += unit * unit * (2*dy+dx)
+    # print(f"size: {size}\noffset: {offset}\tans: {ans}")
+    z(size // 2)
+    
+z(2 ** n)
+print(ans)
