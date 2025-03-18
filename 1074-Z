@@ -1,6 +1,5 @@
-input = open("input.txt", "r").readline
-# import sys
-# input = sys.stdin.readline
+import sys
+input = sys.stdin.readline
 
 n, r, c = map(int, input().split())
 offset = [0, 0]
