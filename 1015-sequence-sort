@@ -1,0 +1,18 @@
+import sys
+input = sys.stdin.readline
+import heapq as hq
+
+n = int(input())
+a = [*map(int, input().split())]
+for i in range(n):
+    a[i] = (a[i], i)
+b = [0] * n
+
+q = []
+for i in range(n):
+    hq.heappush(q, a[i])
+for i in range(n):
+    val, idx = hq.heappop(q)
+    b[idx] = i
+
+for e in b: print(e, end=" ")
