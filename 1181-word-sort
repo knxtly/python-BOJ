@@ -1,0 +1,15 @@
+import sys
+input = sys.stdin.readline
+import heapq as hq
+
+n = int(input())
+d = []
+dup = set()
+for i in range(n):
+    l = input().strip()
+    if l not in dup:
+        hq.heappush(d, (len(l), l))
+        dup.add(l)
+        
+for i in range(len(d)):
+    print(hq.heappop(d)[1])
