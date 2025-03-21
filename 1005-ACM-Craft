@@ -1,0 +1,34 @@
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+tc = int(input())
+for t in range(tc):
+    vCnt, eCnt = map(int, input().split())
+    time_origin = [0] + [*map(int, input().split())]
+    time_add = [0] * (vCnt+1)
+    graph = {v: [] for v in range(1, vCnt+1)}
+    inDeg = [0] * (vCnt+1)
+    for i in range(eCnt):
+        s, e = map(int, input().split())
+        graph[s].append(e)
+        inDeg[e] += 1
+    target = int(input())
+    
+    q = deque()
+    # inDeg = 0인 정점 넣기
+    for i in graph:
+        if inDeg[i] == 0:
+            q.append(i)
+    
+    # 위상정렬
+    while q:
+        v = q.popleft()
+        for u in graph[v]:
+            inDeg[u] -= 1
+            # 현재빌딩 추가시간 = 이전빌딩 걸리는시간 + 이전빌딩 추가시간
+            time_add[u] = max(time_add[u], time_origin[v] + time_add[v])
+            if inDeg[u] == 0:
+                q.append(u)
+    
+    print(time_origin[target] + time_add[target])
