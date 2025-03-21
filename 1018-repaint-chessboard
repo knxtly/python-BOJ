@@ -1,0 +1,30 @@
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+table = [list(input().strip()) for _ in range(n)]
+
+def calcMinCnt(i, j, startColor, subColor):
+    cnt = 0
+    for y in range(8):
+        for x in range(8):
+            ModY = y % 2
+            ModX = x % 2
+            if (ModY == 0 and ModX == 0) or (ModY == 1 and ModX == 1):
+                if table[i+y][j+x] != startColor:
+                    cnt += 1
+            elif (ModY == 0 and ModX == 1) or (ModY == 1 and ModX == 0):
+                if table[i+y][j+x] != subColor:
+                    cnt += 1
+    
+    return cnt
+            
+ans = float('inf')
+for i in range(n-7):
+    for j in range(m-7):
+        # print(i, j)
+        res = min(calcMinCnt(i, j, 'W', 'B'), calcMinCnt(i, j, 'B', 'W'))
+        if ans > res:
+            # print("Change!", res)
+            ans = res
+print(ans)
