@@ -1,0 +1,36 @@
+import sys
+input = sys.stdin.readline
+from collections import deque
+
+n, m = map(int, input().split())
+wish = deque([int(x)-1 for x in input().split()])
+arr = deque([x for x in range(n)])
+
+def getLeftDistance():
+    idx = 0
+    d = 0
+    while arr[idx] != wish[0]:
+        idx = (idx - 1) % len(arr)
+        d += 1
+    return d
+
+cnt = 0
+while wish:
+    # print(wish)
+    # print(arr)
+    if arr[0] == wish[0]:
+        wish.popleft()
+        arr.popleft()
+        continue
+    ld = getLeftDistance()
+    rd = (len(arr) - ld) % len(arr)
+    # print("ld:", ld, "rd:", rd, "cnt:", cnt)
+    if ld <= len(arr) // 2:
+        cnt += ld
+        for i in range(ld):
+            arr.appendleft(arr.pop())
+    else:
+        cnt += rd
+        for i in range(rd):
+            arr.append(arr.popleft())
+print(cnt)
