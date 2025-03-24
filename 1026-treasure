@@ -1,0 +1,76 @@
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+A = [*map(int, input().split())]
+B = [*map(int, input().split())]
+
+def mergeSort(arr, start, end):
+    if start >= end:
+        return
+    mid = (start + end) // 2
+    
+    mergeSort(arr, start, mid)
+    mergeSort(arr, mid+1, end)
+    
+    s = start
+    e = mid+1
+    newArr = []
+    while s <= mid and e <= end:
+        if arr[s] <= arr[e]:
+            newArr.append(arr[s])
+            s += 1
+        else:
+            newArr.append(arr[e])
+            e += 1
+    
+    while s <= mid:
+        newArr.append(arr[s])
+        s += 1
+    while e <= end:
+        newArr.append(arr[e])
+        e += 1
+    
+    for i in range(len(newArr)):
+        arr[i+start] = newArr[i]
+
+def mergeSort_r(arr, start, end):
+    if start >= end:
+        return
+    mid = (start + end) // 2
+    
+    mergeSort_r(arr, start, mid)
+    mergeSort_r(arr, mid+1, end)
+    
+    s = start
+    e = mid+1
+    newArr = []
+    while s <= mid and e <= end:
+        if arr[s] >= arr[e]:
+            newArr.append(arr[s])
+            s += 1
+        else:
+            newArr.append(arr[e])
+            e += 1
+    
+    while s <= mid:
+        newArr.append(arr[s])
+        s += 1
+    while e <= end:
+        newArr.append(arr[e])
+        e += 1
+    
+    for i in range(len(newArr)):
+        arr[i+start] = newArr[i]
+
+# print("bef:", A)
+# print("bef:", B)
+mergeSort(A, 0, n-1)
+mergeSort_r(B, 0, n-1)
+# print("aft:", A)
+# print("aft:", B)
+
+sum = 0
+for i in range(n):
+    sum += A[i] * B[i]
+print(sum)
