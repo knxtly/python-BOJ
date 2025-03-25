@@ -1,0 +1,49 @@
+import sys
+input = sys.stdin.readline
+
+st = input().strip()
+chars = [0] * 26 # A=0, B=1, ...
+for c in st:
+    chars[ord(c) - 65] += 1
+
+oddCnt = 0
+oddCharIdx = None
+for i in range(26):
+    if chars[i] % 2:
+        oddCnt += 1
+        oddCharIdx = i
+
+ans = ""
+if len(st) % 2:
+    if oddCnt > 1:
+        print("I'm Sorry Hansoo")
+        exit(0)
+    else:
+        for i in range(26):
+            if i == oddCharIdx:
+                if chars[oddCharIdx] != 1:
+                    while chars[oddCharIdx] != 1:
+                        ans += chr(i+65)
+                        chars[i] -= 2
+                continue
+            while chars[i]:
+                ans += chr(i+65)
+                chars[i] -= 2
+else:
+    if oddCnt:
+        print("I'm Sorry Hansoo")
+        exit(0)
+    else:
+        for i in range(26):
+            while chars[i]:
+                ans += chr(i+65)
+                chars[i] -= 2
+
+# print(chars)
+# print(oddCharIdx)
+
+print(ans, end='')
+if oddCharIdx != None:
+    print(chr(oddCharIdx+65), end='')
+for c in reversed(ans):
+    print(c, end='')
