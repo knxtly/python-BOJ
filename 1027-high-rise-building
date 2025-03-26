@@ -1,0 +1,29 @@
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+arr = [*map(int, input().split())]
+vTable = [[0 for _ in range(n)] for _ in range(n)]
+
+def ccw(ax, ay, bx, by, cx, cy):
+    # (bx - ax)  (cx - bx)
+    # (by - ay)  (cy - by)
+    return (bx - ax) * (cy - by) - (by - ay) * (cx - bx)
+
+
+for frm in range(n-1):
+    for to in range(frm+1, n):
+        isVisible = True
+        for obj in range(frm+1, to):
+            if ccw(frm, arr[frm], obj, arr[obj], to, arr[to]) <= 0:
+                isVisible = False
+                break
+        if isVisible:
+            vTable[frm][to] += 1
+            vTable[to][frm] += 1
+        # print(frm, to, isVisible)
+# for r in vTable: print(r)
+ans = 0
+for r in vTable:
+    ans = max(ans, sum(r))
+print(ans)
