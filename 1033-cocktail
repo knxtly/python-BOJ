@@ -1,0 +1,45 @@
+import sys
+input = sys.stdin.readline
+
+def GCD(a, b):
+    if b == 0:
+        return a
+    if a < b:
+        return GCD(a, b % a)
+    else:
+        return GCD(b, a % b)
+
+def _dfs(start, mul, visit):
+    visit[start] = True
+    data[start] *= mul
+    for v in graph[start]:
+        if not visit[v]:
+            _dfs(v, mul, visit)
+def dfs(start, mul):
+    visit = [False] * n
+    _dfs(start, mul, visit)
+
+n = int(input())
+data = [1] * n
+graph = { v: set() for v in range(n) }
+
+for i in range(n-1):
+    a, b, p, q = map(int, input().split())
+    
+    g = GCD(data[a], data[b])
+    l = data[a] * data[b] // g
+    
+    dfs(a, (l // data[a]) * p)
+    dfs(b, (l // data[b]) * q)
+    
+    graph[a].add(b)
+    graph[b].add(a)
+    
+    # print(a, b, p, q)
+    # print(data)
+    # print(graph)
+    # print()
+g = data[0]
+for i in range(1, n):
+    g = GCD(g, data[i])
+for e in data: print(e//g, end=' ')
