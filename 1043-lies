@@ -1,0 +1,56 @@
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+know = set()
+parent = [x for x in range(n+1)]
+parties = []
+
+for i in [*map(int, input().split())][1:]:
+    know.add(i)
+
+for i in range(m):
+    parties.append([*map(int, input().split())][1:])
+
+
+def find(v):
+    if v != parent[v]:
+        parent[v] = find(parent[v])
+    return parent[v]
+
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if a < b:
+        parent[b] = a
+    elif a > b:
+        parent[a] = b
+    else:
+        return
+
+# union-find
+for party in parties:
+    if len(party) >= 2:
+        for i in range(len(party)-1):
+            union(party[i], party[i+1])
+
+# know의 부모들 모두 add
+tmp = []
+for e in know:
+    tmp.append(e)
+for e in tmp:
+    know.add(find(e))
+
+# print(know, parties, f"parent:{parent}", sep="\n")
+
+ans = 0
+for party in parties:
+    exist = False
+    for e in party:
+        if find(e) in know:
+            exist = True
+            break
+    if not exist:
+        # print("FAKE:", party)
+        ans += 1
+print(ans)
