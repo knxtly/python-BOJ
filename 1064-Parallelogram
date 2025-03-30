@@ -1,0 +1,18 @@
+import sys
+input = sys.stdin.readline
+
+def ccw(ax, ay, bx, by, cx, cy):
+    return (ax*by + bx*cy + cx*ay) - (bx*ay + cx*by + ax*cy)
+def distance(ax, ay, bx, by):
+    return ((bx - ax) ** 2 + (by - ay) ** 2) ** (1/2)
+
+ax, ay, bx, by, cx, cy = map(float, input().split())
+c = ccw(ax, ay, bx, by, cx, cy)
+if c != 0:
+    ab = distance(ax, ay, bx, by)
+    bc = distance(bx, by, cx, cy)
+    ca = distance(cx, cy, ax, ay)
+    # print(ab, bc, ca)
+    print((max(ab, bc, ca) - min(ab, bc, ca)) * 2)
+else:
+    print(-1.0)
