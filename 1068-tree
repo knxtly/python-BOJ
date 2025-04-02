@@ -1,0 +1,30 @@
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+parent = [*map(int, input().split())]
+delNum = int(input())
+tree = {v: set() for v in range(-1, n)}
+for i in range(len(parent)):
+    tree[parent[i]].add(i)
+
+# root를 지운다면 0
+if delNum in tree[-1]:
+    print(0)
+    exit(0)
+
+# root가 아닌 다른 노드 지운다면..
+tree[parent[delNum]].remove(delNum)
+
+def dfs(v):
+    global leafNodeCnt
+    if len(tree[v]) == 0:
+        leafNodeCnt += 1
+        return
+    for child in tree[v]:
+        dfs(child)
+
+leafNodeCnt = 0
+# print(tree)
+dfs(-1)
+print(leafNodeCnt)
