@@ -1,0 +1,45 @@
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+lines = [input().split() for _ in range(n)]
+# [wordIdx, charIdx]
+shortCutIdx = dict()
+shortCutSet = set()
+
+for lidx in range(len(lines)):
+    isSetted = False
+    
+    for widx in range(len(lines[lidx])):
+        if lines[lidx][widx][0].lower() not in shortCutSet:
+            shortCutIdx[lidx] = [widx, 0]
+            shortCutSet.add(lines[lidx][widx][0].lower())
+            isSetted = True
+            break
+    
+    if not isSetted:
+        for widx in range(len(lines[lidx])):
+            if not isSetted:
+                for cidx in range(len(lines[lidx][widx])):
+                    if lines[lidx][widx][cidx].lower() not in shortCutSet:
+                        shortCutIdx[lidx] = [widx, cidx]
+                        shortCutSet.add(lines[lidx][widx][cidx].lower())
+                        isSetted = True
+                        break
+    
+    # print(lines[lidx])
+    # print("shortCutIdx:", shortCutIdx)
+    # print("shortCutSet:", shortCutSet)
+    # print()
+
+for lidx in range(len(lines)):
+    for widx in range(len(lines[lidx])):
+        for cidx in range(len(lines[lidx][widx])):
+            s = lines[lidx][widx][cidx]
+            if lidx in shortCutIdx:
+                w, c = shortCutIdx[lidx]
+                if w == widx and c == cidx:
+                    s = '[' + s + ']'
+            print(s, end='')
+        print(end=' ')
+    print()
