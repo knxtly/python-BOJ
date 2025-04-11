@@ -1,0 +1,38 @@
+import sys
+input = sys.stdin.readline
+
+vCnt, startV, endV, eCnt = map(int, input().split())
+graph = {v: [] for v in range(vCnt)}
+for _ in range(eCnt):
+    s, e, w = map(int, input().split())
+    graph[s].append((e, w))
+earning = [*map(int, input().split())]
+INF = float("inf")
+
+# bellman-ford (n-1번 반복, 업데이트 시 사이클)
+def bellman_ford(graph, startV):
+    r1 = [-INF] * vCnt
+    r1[startV] = earning[startV]
+    
+    for i in range(vCnt-1):
+        for v in graph:
+            for u, cost in graph[v]:
+                if r1[v] != -INF and r1[u] < r1[v] - cost + earning[u]:
+                    r1[u] = r1[v] - cost + earning[u]
+
+    # cycle이 몇 개의 node를 거쳐야 도달하는지 모르니까,
+    # 최대 node 개수를 반복
+    for i in range(49):
+        for v in graph:
+            for u, cost in graph[v]:
+                if r1[v] != -INF and r1[u] < r1[v] - cost + earning[u]:
+                    r1[u] = INF
+
+    # print(graph, r1, r2, sep='\n')
+    if r1[endV] == -INF:
+        return "gg"
+    elif r1[endV] == INF:
+        return "Gee"
+    return r1[endV]
+
+print(bellman_ford(graph, startV))
