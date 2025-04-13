@@ -1,0 +1,35 @@
+import sys
+input = sys.stdin.readline
+import heapq as hq
+sys.setrecursionlimit(10**5)
+
+vCnt, eCnt = map(int, input().split())
+parent = [v for v in range(vCnt+1)]
+selected = 0
+ans = 0
+edges = []
+for e in range(eCnt):
+    fr, to, w = map(int, input().split())
+    hq.heappush(edges, (w, fr, to))
+
+def find(v):
+    if v != parent[v]:
+        parent[v] = find(parent[v])
+    return parent[v]
+
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
+while selected != vCnt - 1:
+    w, a, b = hq.heappop(edges)
+    if find(a) != find(b):
+        union(a, b)
+        selected += 1
+        ans += w
+        # print(w, a, b, parent)
+print(ans)
