@@ -1,0 +1,29 @@
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+arr = sorted([*map(int, input().split())])
+
+ans = 0
+for i in range(n):
+    target = arr[i]
+    
+    # Two pointer
+    left, right = 0, n-1
+    while left < right:
+        if left == i:
+            left += 1
+            continue
+        if right == i:
+            right -= 1
+            continue
+        
+        sumOfTwo = arr[left] + arr[right]
+        if sumOfTwo < target:
+            left += 1
+        elif sumOfTwo > target:
+            right -= 1
+        else:
+            ans += 1
+            break
+print(ans)
