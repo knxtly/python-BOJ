@@ -1,0 +1,21 @@
+import sys
+input = sys.stdin.readline
+
+string = input().strip()
+Len = len(string)
+if Len <= 1:
+    print(1)
+    exit(0)
+
+ans = 0
+for c in range(1, Len+1):
+    origin = string[-c:]
+    rev = ''.join(reversed(string[-c:]))
+    # print(origin)
+    # print(rev)
+    # print(origin == rev, c)
+    if origin == rev and ans < c:
+        ans = c
+
+# print(ans)
+print(2 * Len - ans)
