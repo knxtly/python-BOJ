@@ -1,0 +1,30 @@
+import sys
+input = sys.stdin.readline
+
+MAXSIZE = 200
+comb = [[0 for j in range(MAXSIZE+1)] for i in range(MAXSIZE+1)]
+comb[1][0] = 1
+comb[1][1] = 1
+for i in range(2, MAXSIZE+1):
+    for j in range(i+1):
+        comb[i][j] = comb[i-1][j-1] + comb[i-1][j]
+    
+ans = ""
+aCnt, zCnt, K = map(int, input().split())
+n = aCnt + zCnt
+if K > comb[n][zCnt]:
+    print(-1)
+    exit(0)
+for i in range(n-1, 0, -1):
+    # print(f"{i} 번째 정하기\n{i}C{zCnt}={comb[i][zCnt]}, K={K}\n")
+    if comb[i][zCnt] >= K:
+        ans += "a"
+        aCnt -= 1
+    else:
+        K -= comb[i][zCnt]
+        ans += "z"
+        zCnt -= 1
+
+ans += "a" if aCnt else "z"
+print(ans)
+# print(len(ans))
