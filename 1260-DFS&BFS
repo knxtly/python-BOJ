@@ -1,0 +1,37 @@
+import sys
+input = sys.stdin.readline
+from collections import deque
+vCnt, eCnt, startV = map(int, input().split())
+graph = {v: [] for v in range(1, vCnt+1)}
+
+def dfs(vName):
+    visited[vName] = True
+    print(vName, end=' ')
+    for vNext in graph[vName]:
+        if visited[vNext] == False:
+            dfs(vNext)
+
+def bfs(vName):
+    q = deque()
+    visited[vName] = True
+    q.append(vName)
+    while q:
+        cur = q.popleft()
+        print(cur, end=' ')
+        for nxt in graph[cur]:
+            if visited[nxt] == False:
+                visited[nxt] = True
+                q.append(nxt)
+    
+for i in range(eCnt):
+    s, e = map(int, input().split())
+    graph[s].append(e)
+    graph[e].append(s)
+for v in graph:
+    graph[v].sort()
+
+visited = [False]*(vCnt+1)
+dfs(startV)
+print()
+visited = [False]*(vCnt+1)
+bfs(startV)
